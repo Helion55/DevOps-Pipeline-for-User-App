@@ -1,0 +1,78 @@
+# Persistent-volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: postgres-persistent-volume
+spec:
+ storageClassName: store
+ capacity:
+  storage: 500Mi
+ accessModes:
+  - ReadWriteOnce
+ hostPath:
+  path: "/postgres-data/"
+---
+# Persistent-volume-claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: postgres-persistent-volume-claim
+spec:
+ storageClassName: store
+ accessModes:
+  - ReadWriteOnce
+ resources:
+  requests:
+   storage: 500Mi
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: database
+  labels:
+    app: database
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5432
+    targetPort: 5432
+  selector:
+    app: database
+
+---
+# StatefulSet
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+      - image: postgres:latest
+        name: database
+        env:
+        - name: POSTGRES_USER
+          value: USER
+        - name: POSTGRES_PASSWORD
+          value: PASSWORD
+        - name: POSTGRES_DB
+          value: MY-DATABASE
+        ports:
+        - containerPort: 5432
+          name: database
+        volumeMounts:
+        - name: postgres-persistent-volume-claim
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: postgres-persistent-volume-claim
+        persistentVolumeClaim:
+          claimName: postgres-persistent-volume-claim

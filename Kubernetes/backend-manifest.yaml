@@ -1,0 +1,45 @@
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 4000
+    targetPort: 4000
+  selector:
+    app: backend
+
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      imagePullSecrets:
+      - name: CONTAINER-REGISTRY-ACCESS-SECRET
+      containers:
+      - name: backend
+        image: CONTAINER-REGISTRY-IMAGE-URL
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 4000
+        env:
+        - name: DATABASE_URL
+          value: postgresql://USER:PASSWORD@database:5432/MY-DATABASE?schema=public
+        command: ["./startscript.sh"]

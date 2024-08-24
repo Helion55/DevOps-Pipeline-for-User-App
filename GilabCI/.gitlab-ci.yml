@@ -1,0 +1,38 @@
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH != "main" && $CI_PIPELINE_SOURCE != "merge_request_event"      
+      when: never
+    - when: always
+
+stages:
+  - frontend
+  - backend
+
+frontend building and pushing:
+  stage: frontend
+  
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  
+  script:
+    - cd ./frontend
+    - ls
+    - docker build -t $CI_REGISTRY_IMAGE/app/frontend:1.0 .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/app/frontend:1.0
+
+backend building and pushing:
+  stage: backend
+  
+  image: docker:20.10.16
+  services:
+    - docker:20.10.16-dind
+  
+  script:
+    - cd ./backend
+    - docker build -t $CI_REGISTRY_IMAGE/app/backend:1.0 .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/app/backend:1.0
+
+

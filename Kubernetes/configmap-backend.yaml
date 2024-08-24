@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-backend
+data:
+  NEXT_PUBLIC_API_URL: http://backend:4000
+  DEBUG: 'true'

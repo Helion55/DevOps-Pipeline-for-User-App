@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+
+  database:
+    container_name: database
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: USER
+      POSTGRES_PASSWORD: PASSWORD
+      POSTGRES_DB: MY-DATABASE
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    container_name: backend
+    image: backend
+    build:
+      context: ./backend
+    ports:
+      - 4000:4000
+    environment:
+      - DATABASE_URL=postgresql://USER:PASSWORD@database:5432/MY-DATABASE?schema=public
+    command: ./startscript.sh
+    depends_on:
+      - database
+
+  frontend:
+    container_name: frontend
+    image: frontend
+    build:
+      context: ./frontend
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000
+    restart: always
+    depends_on:
+      - backend
+  
+volumes:
+  pgdata:
