@@ -30,7 +30,7 @@ Frontend and Backend directory containing Dockerfiles for each application. Each
 - Exposing the Port
 But backend application conatains a ```startscript.sh``` file to run the application after doing database migrations. Frontend is using the default NextJS Dockerfile from NextJS itself.
 - ### Frontend Dockerfile
-```
+```Dockerfile
 FROM node:18-alpine AS base
 
 # Install dependencies only when needed
