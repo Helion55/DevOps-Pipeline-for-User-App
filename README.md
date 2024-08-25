@@ -29,7 +29,7 @@ Frontend and Backend directory containing Dockerfiles for each application. Each
 - Running the application
 - Exposing the Port
 But backend application conatains a ```startscript.sh``` file to run the application after doing database migrations. Frontend is using the default NextJS Dockerfile from NextJS itself.
-### - Frontend Dockerfile
+- ### Frontend Dockerfile
 ```
 FROM node:18-alpine AS base
 
@@ -100,7 +100,7 @@ ENV HOSTNAME "0.0.0.0"
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 CMD ["node", "server.js"]
 ```
-### - Backend Dockerfile
+- ### Backend Dockerfile
 ```Dockerfile
 FROM node:20
 
@@ -120,7 +120,7 @@ EXPOSE 4000
 
 RUN chmod +x startscript.sh
 ```
-### - Startscript for backend
+- ### Startscript for backend
 ```bash
 #!/bin/sh
 npx prisma migrate dev --name init
