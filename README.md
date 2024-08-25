@@ -1,5 +1,7 @@
 # NextJS-User-Management-App-DevOps
 
+![Diagram](https://github.com/Helion55/NextJS-User-Management-App-Deployment/blob/main/NextJS.jpg?raw=true)
+
 ## Project Overview
 User Management Application doing CRUD opertaions in Database. NextJS is used to build the frontend, ExpressJS useed to build the backend, Prisma is used for ORM and Postgres Is used as Database.
 Dockerizing the application on GitLabCI pipeline, Testing the application on docker-compose stack and deploying the application on Kubernetes using ArgoCD.
@@ -27,7 +29,7 @@ Frontend and Backend directory containing Dockerfiles for each application. Each
 - Running the application
 - Exposing the Port
 But backend application conatains a ```startscript.sh``` file to run the application after doing database migrations. Frontend is using the default NextJS Dockerfile from NextJS itself.
-- Frontend Dockerfile
+### - Frontend Dockerfile
 ```
 FROM node:18-alpine AS base
 
@@ -98,7 +100,7 @@ ENV HOSTNAME "0.0.0.0"
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
 CMD ["node", "server.js"]
 ```
-- Backend Dockerfile
+### - Backend Dockerfile
 ```Dockerfile
 FROM node:20
 
@@ -118,7 +120,7 @@ EXPOSE 4000
 
 RUN chmod +x startscript.sh
 ```
-- Startscript for backend
+### - Startscript for backend
 ```bash
 #!/bin/sh
 npx prisma migrate dev --name init
