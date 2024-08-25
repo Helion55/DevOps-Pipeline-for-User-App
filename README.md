@@ -1,4 +1,4 @@
-# NextJS-User-Management-App-DevOps
+# NextJS-User-Management-App-Deployment
 
 ![Diagram](https://github.com/Helion55/NextJS-User-Management-App-Deployment/blob/main/NextJS.jpg?raw=true)
 
