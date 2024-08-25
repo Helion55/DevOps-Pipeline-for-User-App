@@ -135,7 +135,7 @@ to build the images.
 ## 2. Local Testing with Docker Compose
 The Docker Compose file will pull the Postgres Image, build and run the local application image and connect them using a Docker network.
 This is the compose file...
-```compose
+```yaml
 version: '3.9'
 services:
   database:
